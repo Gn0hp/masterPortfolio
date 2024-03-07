@@ -41,10 +41,10 @@ jobs:
             cd $PROJECT_DIR
             git reset --hard
             git checkout -t remotes/origin/develop
-            git pull origin develop
+            git pull origin dev-phong
             docker login $REG_URL -u $DOCKER_USER -p $DOCKER_PASSWD
             echo "Building $DOCKER_IMAGE_TAG ..."
-            docker build -t $DOCKER_IMAGE_TAG
+            docker build -t $DOCKER_IMAGE_TAG .
             docker push $DOCKER_IMAGE_TAG
 #            export NVM_DIR=~/.nvm
 #            source ~/.nvm/nvm.sh
