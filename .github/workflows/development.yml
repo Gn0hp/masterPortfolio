@@ -28,14 +28,14 @@ jobs:
           REG_URL: ${{ secrets.REG_URL }}
           DOCKER_USER: ${{ secrets.DOCKER_USER }}
           DOCKER_PASSWD: ${{ secrets.DOCKER_PASSWD }}
-          DOCKER_IMAGE_TAG: ${{ secrets.REG_URL }}/${{ github.repository_owner_id }}/${{ secrets.REG_PROJECT }}:${{ github.workflow_sha }}
+          DOCKER_IMAGE_TAG: ${{ secrets.REG_URL }}/${{ secrets.REG_PROJECT }}/gnp-master-portfolio:${{ github.workflow_sha }}
           SECRETS: ${{ toJson(secrets) }}
         with:
           host: ${{ secrets.DEV_HOST}}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           # port: ${{ secrets.SRV_PORT }}
-          envs: PROJECT_DIR, REG_URL, DOCKER_USER, DOCKER_PASSWD, DOCKER_IMAGE_TAG, SECRETS
+          envs: PROJECT_DIR, REG_URL, DOCKER_USER, DOCKER_PASSWD, DOCKER_IMAGE_TAG, SECRETS, 
           # Runs a set of commands using the runners shell
           script: |
             echo "$DOCKER_IMAGE_TAG" > project_dir.txt
