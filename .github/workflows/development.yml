@@ -1,0 +1,78 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Master Portfolio Gnp CI/CD Pipeline
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "dev-phong" ]
+  pull_request:
+    branches: [ "dev-phong" ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/dev-phong'
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # Runs a single command using the runners shell
+      - name: Build
+        uses: appleboy/ssh-action@master
+        env:
+          PROJECT_DIR: ${{ secrets.PROJECT_DIR }}
+          REG_URL: ${{ secrets.REG_URL }}
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+          DOCKER_PASSWD: ${{ secrets.DOCKER_PASSWD }}
+          DOCKER_IMAGE_TAG: ${{ secrets.REG_URL }}/${{ secrets.REG_PROJECT }}/${{ vars.GITHUB_REPOSITORY }}/${{ vars.GITHUB_SHA }}
+        with:
+          host: ${{ secrets.DEV_HOST}}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SRV_PORT }}
+          envs: PROJECT_DIR, REG_URL, DOCKER_USER, DOCKER_PASSWD, DOCKER_IMAGE_TAG
+          # Runs a set of commands using the runners shell
+          script: |
+            echo "$PROJECT_DIR"
+            cd $PROJECT_DIR
+            git reset --hard
+            git checkout -t remotes/origin/develop
+            git pull origin develop
+            docker login $REG_URL -u $DOCKER_USER -p $DOCKER_PASSWD
+            echo "Building $DOCKER_IMAGE_TAG ..."
+            docker build -t $DOCKER_IMAGE_TAG
+            docker push $DOCKER_IMAGE_TAG
+#            export NVM_DIR=~/.nvm
+#            source ~/.nvm/nvm.sh
+#            cp .env.development .env
+#            yarn
+#            yarn migration:run
+#            yarn prod
+  run:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/dev-phong'
+    steps:
+      - name: Deploy
+        uses: appleboy/ssh-action@master
+        env:
+          REG_URL: ${{ secrets.REG_URL }}
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+          DOCKER_PASSWD: ${{ secrets.DOCKER_PASSWD }}
+          DOCKER_IMAGE_TAG: ${{ secrets.REG_URL }}/${{ secrets.REG_PROJECT }}/${{ vars.GITHUB_REPOSITORY }}/${{ vars.GITHUB_SHA }}
+        with:
+          host: ${{ secrets.DEV_HOST}}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SRV_PORT }}
+          envs: PROJECT_DIR, REG_URL, DOCKER_USER, DOCKER_PASSWD, DOCKER_IMAGE_TAG
+          script: |
+            docker login $REG_URL -u $DOCKER_USER -p $DOCKER_PASSWD
+            docker pull $DOCKER_IMAGE_TAG
+            docker compose down 
+            docker-compose up -d
+            
+      
