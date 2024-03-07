@@ -33,7 +33,7 @@ jobs:
           host: ${{ secrets.DEV_HOST}}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SRV_PORT }}
+          # port: ${{ secrets.SRV_PORT }}
           envs: PROJECT_DIR, REG_URL, DOCKER_USER, DOCKER_PASSWD, DOCKER_IMAGE_TAG
           # Runs a set of commands using the runners shell
           script: |
@@ -67,7 +67,7 @@ jobs:
           host: ${{ secrets.DEV_HOST}}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SRV_PORT }}
+          # port: ${{ secrets.SRV_PORT }}
           envs: PROJECT_DIR, REG_URL, DOCKER_USER, DOCKER_PASSWD, DOCKER_IMAGE_TAG
           script: |
             echo "$DOCKER_IMAGE_TAG" >> .env
