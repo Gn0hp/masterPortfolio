@@ -21,7 +21,7 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       # Runs a single command using the runners shell
-      - run: echo ${{ vars.GITHUB_SHA}}
+      - run: echo "${{GITHUB_WORKFLOW_SHA}}"
       - name: Build
         uses: appleboy/ssh-action@master
         env:
