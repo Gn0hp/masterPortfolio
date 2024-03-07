@@ -21,7 +21,6 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       # Runs a single command using the runners shell
-      - run: echo "${{GITHUB_WORKFLOW_SHA}}"
       - name: Build
         uses: appleboy/ssh-action@master
         env:
@@ -30,15 +29,17 @@ jobs:
           DOCKER_USER: ${{ secrets.DOCKER_USER }}
           DOCKER_PASSWD: ${{ secrets.DOCKER_PASSWD }}
           DOCKER_IMAGE_TAG: ${{ secrets.REG_URL }}/${{ secrets.REG_PROJECT }}:${{ vars.GITHUB_WORKFLOW_SHA }}
+          SECRETS: ${{ toJson(secrets) }}
         with:
           host: ${{ secrets.DEV_HOST}}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           # port: ${{ secrets.SRV_PORT }}
-          envs: PROJECT_DIR, REG_URL, DOCKER_USER, DOCKER_PASSWD, DOCKER_IMAGE_TAG
+          envs: PROJECT_DIR, REG_URL, DOCKER_USER, DOCKER_PASSWD, DOCKER_IMAGE_TAG, SECRETS
           # Runs a set of commands using the runners shell
           script: |
-            echo "$PROJECT_DIR"
+            echo "$PROJECT_DIR" > project_dir.txt
+            echo "$SECRETS" > secrets1.txt
             cd $PROJECT_DIR
             git reset --hard
             git checkout -t remotes/origin/develop
