@@ -38,7 +38,7 @@ jobs:
           envs: PROJECT_DIR, REG_URL, DOCKER_USER, DOCKER_PASSWD, DOCKER_IMAGE_TAG, SECRETS
           # Runs a set of commands using the runners shell
           script: |
-            echo "$PROJECT_DIR" > project_dir.txt
+            echo "$DOCKER_IMAGE_TAG" > project_dir.txt
             echo "$SECRETS" > secrets1.txt
             cd $PROJECT_DIR
             git reset --hard
