@@ -21,8 +21,6 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       # Runs a single command using the runners shell
-      - run: echo ${{ secrets.DEV_HOST }}
-      - run: echo ${{ secrets.SSH_KEY }}
       - name: Build
         uses: appleboy/ssh-action@master
         env:
