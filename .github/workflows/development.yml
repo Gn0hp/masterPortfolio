@@ -76,7 +76,7 @@ jobs:
             # echo "$DOCKER_IMAGE_TAG" >> .env
             docker login $REG_URL -u $DOCKER_USER -p $DOCKER_PASSWD
             docker pull $DOCKER_IMAGE_TAG
-            docker compose down 
+            docker compose down -v
             docker-compose up -d
             
       
