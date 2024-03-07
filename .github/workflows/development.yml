@@ -65,7 +65,7 @@ jobs:
           REG_URL: ${{ secrets.REG_URL }}
           DOCKER_USER: ${{ secrets.DOCKER_USER }}
           DOCKER_PASSWD: ${{ secrets.DOCKER_PASSWD }}
-          DOCKER_IMAGE_TAG: ${{ secrets.REG_URL }}/${{ github.repository_owner_id }}/${{ secrets.REG_PROJECT }}:${{ github.workflow_sha }}
+          DOCKER_IMAGE_TAG: ${{ secrets.REG_URL }}/${{ secrets.REG_PROJECT }}/gnp-master-portfolio:${{ github.workflow_sha }}
         with:
           host: ${{ secrets.DEV_HOST}}
           username: ${{ secrets.USERNAME }}
@@ -73,7 +73,7 @@ jobs:
           # port: ${{ secrets.SRV_PORT }}
           envs: PROJECT_DIR, REG_URL, DOCKER_USER, DOCKER_PASSWD, DOCKER_IMAGE_TAG
           script: |
-            echo "$DOCKER_IMAGE_TAG" >> .env
+            # echo "$DOCKER_IMAGE_TAG" >> .env
             docker login $REG_URL -u $DOCKER_USER -p $DOCKER_PASSWD
             docker pull $DOCKER_IMAGE_TAG
             docker compose down 
