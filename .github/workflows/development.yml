@@ -28,7 +28,7 @@ jobs:
           REG_URL: ${{ secrets.REG_URL }}
           DOCKER_USER: ${{ secrets.DOCKER_USER }}
           DOCKER_PASSWD: ${{ secrets.DOCKER_PASSWD }}
-          DOCKER_IMAGE_TAG: ${{ secrets.REG_URL }}/${{ secrets.REG_PROJECT }}/$GITHUB_REPOSITORY:$GITHUB_WORKFLOW_SHA
+          DOCKER_IMAGE_TAG: ${{ secrets.REG_URL }}/${{ secrets.REG_PROJECT }}/${{ github.repository }}:${{ github.workflow_sha }}
           SECRETS: ${{ toJson(secrets) }}
         with:
           host: ${{ secrets.DEV_HOST}}
